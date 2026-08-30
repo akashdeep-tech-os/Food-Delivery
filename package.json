@@ -1,0 +1,14 @@
+{
+  "name": "food-delivery-project",
+  "private": true,
+  "scripts": {
+    "backend": "cd backend && python -m uvicorn app.main:app --reload --port 8000",
+    "frontend": "cd frontend && npm run dev -- --port 3000",
+    "admin": "cd admin && npm run dev",
+    "dev": "concurrently -n backend,frontend,admin -c blue,green,yellow \"npm run backend\" \"npm run frontend\" \"npm run admin\"",
+    "install:all": "cd frontend && npm install && cd ../admin && npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

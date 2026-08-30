@@ -1,0 +1,11 @@
+from app.routes.auth import router as auth_router
+from app.routes.foods import router as foods_router
+from app.routes.categories import router as categories_router
+from app.routes.orders import router as orders_router
+from app.routes.users import router as users_router
+from app.routes.payments import router as payments_router
+from app.routes.analytics import router as analytics_router
+from app.routes.uploads import router as uploads_router
+from app.routes.promos import router as promos_router
+from app.routes.notifications import router as notifications_router
+from app.routes.settings import router as settings_router

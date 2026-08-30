@@ -1,0 +1,150 @@
+.my-orders {
+  margin-top: 100px;
+  padding-bottom: 40px;
+}
+
+.my-orders h2 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.order-success-banner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background-color: #f0fff4;
+  border: 1px solid #c6f6d5;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+  animation: fadeIn 0.5s;
+}
+
+.order-success-banner img {
+  width: 50px;
+}
+
+.order-success-banner h3 {
+  color: #27ae60;
+  margin-bottom: 5px;
+}
+
+.order-success-banner p {
+  color: #666;
+  font-size: 14px;
+}
+
+.my-orders-loading {
+  text-align: center;
+  padding: 60px 0;
+  color: #888;
+  font-size: 18px;
+}
+
+.my-orders-empty {
+  text-align: center;
+  padding: 60px 0;
+}
+
+.my-orders-empty img {
+  width: 80px;
+  opacity: 0.5;
+  margin-bottom: 20px;
+}
+
+.my-orders-empty p {
+  color: #888;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.my-orders-empty button {
+  background-color: tomato;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.my-orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.my-order-card {
+  border: 1px solid #e2e2e2;
+  border-radius: 12px;
+  padding: 20px;
+  transition: 0.2s;
+}
+
+.my-order-card:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.my-order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.my-order-id {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.my-order-id img {
+  width: 40px;
+}
+
+.my-order-id-text {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.my-order-date {
+  color: #888;
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+.my-order-status {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.my-order-items {
+  border-top: 1px solid #f0f0f0;
+  padding-top: 12px;
+}
+
+.my-order-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.my-order-footer {
+  border-top: 1px solid #f0f0f0;
+  padding-top: 12px;
+  margin-top: 12px;
+}
+
+.my-order-total p {
+  margin-bottom: 5px;
+}
+
+.my-order-address {
+  color: #888;
+  font-size: 13px;
+}

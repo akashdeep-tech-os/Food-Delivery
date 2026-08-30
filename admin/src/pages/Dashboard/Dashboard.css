@@ -1,0 +1,88 @@
+.dashboard {
+  max-width: 1400px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.dashboard-charts {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.charts-right {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.chart-card {
+  min-height: 280px;
+}
+
+.top-foods-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.top-food-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.top-food-rank {
+  font-weight: 700;
+  color: #f97316;
+  width: 24px;
+}
+
+.top-food-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-food-name {
+  font-weight: 500;
+  color: #1e293b;
+  font-size: 0.9rem;
+}
+
+.top-food-qty {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.top-food-revenue {
+  font-weight: 600;
+  color: #22c55e;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 1024px) {
+  .dashboard-charts {
+    grid-template-columns: 1fr;
+  }
+  .charts-right {
+    flex-direction: row;
+  }
+}
+
+@media (max-width: 640px) {
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .charts-right {
+    flex-direction: column;
+  }
+}
