@@ -9,3 +9,4 @@ from app.routes.uploads import router as uploads_router
 from app.routes.promos import router as promos_router
 from app.routes.notifications import router as notifications_router
 from app.routes.settings import router as settings_router
+from app.routes.seed import router as seed_router

@@ -9,7 +9,7 @@ from app.database import engine, Base
 from app.routes import (
     auth_router, foods_router, categories_router, orders_router,
     users_router, payments_router, analytics_router, uploads_router,
-    promos_router, notifications_router, settings_router
+    promos_router, notifications_router, settings_router, seed_router
 )
 from app.middleware.error_handler import app_exception_handler, global_exception_handler
 from app.utils.exceptions import AppException
@@ -57,6 +57,7 @@ app.include_router(uploads_router)
 app.include_router(promos_router)
 app.include_router(notifications_router)
 app.include_router(settings_router)
+app.include_router(seed_router)
 
 
 @app.websocket("/ws")
