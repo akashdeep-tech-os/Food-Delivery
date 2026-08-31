@@ -8,6 +8,7 @@ from typing import Sequence, Union
 from alembic import op
 import sqlalchemy as sa
 from sqlalchemy import inspect
+from sqlalchemy.dialects.postgresql import ENUM as PG_ENUM
 
 revision: str = "0001"
 down_revision: Union[str, None] = None
@@ -25,10 +26,10 @@ def upgrade() -> None:
     op.execute("DO $$ BEGIN CREATE TYPE paymentstatus AS ENUM ('pending', 'completed', 'failed', 'refunded'); EXCEPTION WHEN duplicate_object THEN null; END $$")
     op.execute("DO $$ BEGIN CREATE TYPE paymentmethod AS ENUM ('cash', 'card', 'upi', 'wallet'); EXCEPTION WHEN duplicate_object THEN null; END $$")
 
-    user_role = sa.Enum("admin", "customer", "delivery", "restaurant", name="userrole", create_type=False)
-    order_status = sa.Enum("placed", "confirmed", "preparing", "ready", "out_for_delivery", "delivered", "cancelled", name="orderstatus", create_type=False)
-    payment_status = sa.Enum("pending", "completed", "failed", "refunded", name="paymentstatus", create_type=False)
-    payment_method = sa.Enum("cash", "card", "upi", "wallet", name="paymentmethod", create_type=False)
+    user_role = PG_ENUM("admin", "customer", "delivery", "restaurant", name="userrole", create_type=False)
+    order_status = PG_ENUM("placed", "confirmed", "preparing", "ready", "out_for_delivery", "delivered", "cancelled", name="orderstatus", create_type=False)
+    payment_status = PG_ENUM("pending", "completed", "failed", "refunded", name="paymentstatus", create_type=False)
+    payment_method = PG_ENUM("cash", "card", "upi", "wallet", name="paymentmethod", create_type=False)
 
     if "users" not in existing_tables:
         op.create_table(
