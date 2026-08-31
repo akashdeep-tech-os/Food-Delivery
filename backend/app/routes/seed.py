@@ -113,25 +113,31 @@ def seed_database(
     db: Session = Depends(get_db),
     credentials: HTTPAuthorizationCredentials = Depends(security),
 ):
-    user_count = db.query(User).count()
+    try:
+        user_count = db.query(User).count()
 
-    if user_count == 0:
+        if user_count == 0:
+            return seed_data(db)
+
+        if credentials is None:
+            raise HTTPException(status_code=401, detail="Admin auth required")
+
+        token = credentials.credentials
+        payload = decode_access_token(token)
+        if payload is None:
+            raise HTTPException(status_code=401, detail="Invalid token")
+
+        user_id = payload.get("sub")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Invalid token")
+
+        user = db.query(User).filter(User.id == int(user_id)).first()
+        if user is None or user.role != UserRole.ADMIN:
+            raise HTTPException(status_code=403, detail="Admin only")
+
         return seed_data(db)
-
-    if credentials is None:
-        raise HTTPException(status_code=401, detail="Admin auth required")
-
-    token = credentials.credentials
-    payload = decode_access_token(token)
-    if payload is None:
-        raise HTTPException(status_code=401, detail="Invalid token")
-
-    user_id = payload.get("sub")
-    if user_id is None:
-        raise HTTPException(status_code=401, detail="Invalid token")
-
-    user = db.query(User).filter(User.id == int(user_id)).first()
-    if user is None or user.role != UserRole.ADMIN:
-        raise HTTPException(status_code=403, detail="Admin only")
-
-    return seed_data(db)
+    except HTTPException:
+        raise
+    except Exception as e:
+        db.rollback()
+        return {"error": str(e), "type": type(e).__name__}
