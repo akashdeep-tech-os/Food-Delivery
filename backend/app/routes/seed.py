@@ -6,7 +6,7 @@ from app.models.category import Category
 from app.models.food import Food
 from app.models.settings import AppSettings
 from app.utils.security import get_password_hash, decode_access_token
-from app.utils.dependencies import require_admin
+from app.models.user import UserRole
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 router = APIRouter(prefix="/api/seed", tags=["seed"])
@@ -21,7 +21,7 @@ def seed_data(db: Session):
             email="admin@fooddelivery.com",
             password_hash=get_password_hash("admin123"),
             phone="1234567890",
-            role="admin",
+            role=UserRole.ADMIN,
         )
         db.add(admin)
         db.flush()
@@ -131,7 +131,7 @@ def seed_database(
         raise HTTPException(status_code=401, detail="Invalid token")
 
     user = db.query(User).filter(User.id == int(user_id)).first()
-    if user is None or user.role != "admin":
+    if user is None or user.role != UserRole.ADMIN:
         raise HTTPException(status_code=403, detail="Admin only")
 
     return seed_data(db)
