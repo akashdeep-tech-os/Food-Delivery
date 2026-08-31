@@ -15,21 +15,18 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
+    op.execute("DO $$ BEGIN CREATE TYPE userrole AS ENUM ('admin', 'customer', 'delivery', 'restaurant'); EXCEPTION WHEN duplicate_object THEN null; END $$")
+
+    op.execute("DO $$ BEGIN CREATE TYPE orderstatus AS ENUM ('placed', 'confirmed', 'preparing', 'ready', 'out_for_delivery', 'delivered', 'cancelled'); EXCEPTION WHEN duplicate_object THEN null; END $$")
+
+    op.execute("DO $$ BEGIN CREATE TYPE paymentstatus AS ENUM ('pending', 'completed', 'failed', 'refunded'); EXCEPTION WHEN duplicate_object THEN null; END $$")
+
+    op.execute("DO $$ BEGIN CREATE TYPE paymentmethod AS ENUM ('cash', 'card', 'upi', 'wallet'); EXCEPTION WHEN duplicate_object THEN null; END $$")
+
     user_role = sa.Enum("admin", "customer", "delivery", "restaurant", name="userrole")
-    user_role.create(op.get_bind(), checkfirst=True)
-
-    order_status = sa.Enum(
-        "placed", "confirmed", "preparing", "ready",
-        "out_for_delivery", "delivered", "cancelled",
-        name="orderstatus",
-    )
-    order_status.create(op.get_bind(), checkfirst=True)
-
+    order_status = sa.Enum("placed", "confirmed", "preparing", "ready", "out_for_delivery", "delivered", "cancelled", name="orderstatus")
     payment_status = sa.Enum("pending", "completed", "failed", "refunded", name="paymentstatus")
-    payment_status.create(op.get_bind(), checkfirst=True)
-
     payment_method = sa.Enum("cash", "card", "upi", "wallet", name="paymentmethod")
-    payment_method.create(op.get_bind(), checkfirst=True)
 
     op.create_table(
         "users",
