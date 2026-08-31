@@ -1,21 +1,19 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.user import User
 from app.models.category import Category
 from app.models.food import Food
 from app.models.settings import AppSettings
-from app.utils.security import get_password_hash
+from app.utils.security import get_password_hash, decode_access_token
 from app.utils.dependencies import require_admin
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 router = APIRouter(prefix="/api/seed", tags=["seed"])
+security = HTTPBearer(auto_error=False)
 
 
-@router.post("")
-def seed_database(
-    db: Session = Depends(get_db),
-    current_user: User = Depends(require_admin),
-):
+def seed_data(db: Session):
     existing_admin = db.query(User).filter(User.email == "admin@fooddelivery.com").first()
     if not existing_admin:
         admin = User(
@@ -108,3 +106,32 @@ def seed_database(
         "foods_added": food_count,
         "settings": len(settings_data),
     }
+
+
+@router.post("")
+def seed_database(
+    db: Session = Depends(get_db),
+    credentials: HTTPAuthorizationCredentials = Depends(security),
+):
+    user_count = db.query(User).count()
+
+    if user_count == 0:
+        return seed_data(db)
+
+    if credentials is None:
+        raise HTTPException(status_code=401, detail="Admin auth required")
+
+    token = credentials.credentials
+    payload = decode_access_token(token)
+    if payload is None:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+    user_id = payload.get("sub")
+    if user_id is None:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+    user = db.query(User).filter(User.id == int(user_id)).first()
+    if user is None or user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin only")
+
+    return seed_data(db)
