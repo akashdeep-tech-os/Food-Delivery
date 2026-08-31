@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: food-delivery-backend
+    runtime: python
+    pythonVersion: "3.12"
+    buildCommand: cd backend && pip install -r requirements.txt && alembic upgrade head
+    startCommand: cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DATABASE_URL
+        value: postgresql://postgres.fvupysewpcorxqysdcbw:Akashdeep%4026@aws-0-ap-south-1.pooler.supabase.com:6543/postgres
+      - key: SECRET_KEY
+        value: eb8905fa047e88e2286e2ef36a1234fe1c732e7ab3bb8c1cd9a0af6b9ee1c65e
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "60"
+      - key: UPLOAD_DIR
+        value: uploads
+      - key: CORS_ORIGINS
+        value: '["http://localhost:5173","http://localhost:5174"]'
+    healthCheckPath: /healthz
