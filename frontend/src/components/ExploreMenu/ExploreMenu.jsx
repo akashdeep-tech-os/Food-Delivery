@@ -1,9 +1,24 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import "./ExploreMenu.css"
 import { StoreContext } from '../../context/StoreContext'
 
+const CAT_FALLBACK = "https://placehold.co/200x200/f97316/white?text=";
+
 const ExploreMenu = ({ category, setCategory }) => {
   const { categories, getImageUrl } = useContext(StoreContext);
+
+  const CategoryImage = ({ item }) => {
+    const [src, setSrc] = useState(getImageUrl(item.image));
+    return (
+      <img
+        className={category === item.name ? "active" : ""}
+        src={src || `${CAT_FALLBACK}${encodeURIComponent(item.name)}`}
+        alt={item.name}
+        onError={() => setSrc(`${CAT_FALLBACK}${encodeURIComponent(item.name)}`)}
+      />
+    );
+  };
+
   return (
     <div className='explore-menu' id='explore-menu'>
       <h1>Explore our menu</h1>
@@ -22,7 +37,7 @@ const ExploreMenu = ({ category, setCategory }) => {
         {categories.map((item) => {
           return (
             <div onClick={() => setCategory(prev => prev === item.name ? "All" : item.name)} key={item.id} className="explore-menu-list-item">
-              <img className={category === item.name ? "active" : ""} src={getImageUrl(item.image)} alt="" />
+              <CategoryImage item={item} />
               <p>{item.name}</p>
             </div>
           )

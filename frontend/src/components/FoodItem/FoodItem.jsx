@@ -1,15 +1,18 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import "./FoodItem.css";
 import { assets } from "../../assets/assets";
 import { StoreContext } from "../../context/StoreContext";
 
+const FALLBACK_IMAGE = "https://placehold.co/400x300/f97316/white?text=Food";
+
 const FoodItem = ({ id, name, price, description, image }) => {
   const { cartItems, addToCart, removeFromCart, getImageUrl } = useContext(StoreContext);
+  const [imgSrc, setImgSrc] = useState(getImageUrl(image));
 
   return (
     <div className="food-item">
       <div className="food-item-container">
-        <img className="food-item-image" src={getImageUrl(image)} alt={name} />
+        <img className="food-item-image" src={imgSrc || FALLBACK_IMAGE} alt={name} onError={() => setImgSrc(FALLBACK_IMAGE)} />
         {
           !cartItems[id]
             ? <img className="add" onClick={() => addToCart(id)} src={assets.add_icon_white} alt="" />
