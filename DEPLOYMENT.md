@@ -22,12 +22,12 @@ Step-by-step guide to deploy the entire Food Delivery Platform for free using Re
 
 ## Overview
 
-| Component | Service | Free Tier |
-|-----------|---------|-----------|
-| Backend (FastAPI) | Render | 750 hours/month |
-| Database (PostgreSQL) | Supabase | 500MB, 50k rows |
-| Customer Frontend | Vercel | Unlimited static sites |
-| Admin Panel | Vercel | Unlimited static sites |
+| Component             | Service  | Free Tier              |
+| --------------------- | -------- | ---------------------- |
+| Backend (FastAPI)     | Render   | 750 hours/month        |
+| Database (PostgreSQL) | Supabase | 500MB, 50k rows        |
+| Customer Frontend     | Vercel   | Unlimited static sites |
+| Admin Panel           | Vercel   | Unlimited static sites |
 
 **Estimated total cost: $0/month**
 
@@ -124,28 +124,28 @@ SELECT pg_reload_conf();
 
 Fill in these settings:
 
-| Field | Value |
-|-------|-------|
-| **Name** | `food-delivery-backend` |
-| **Region** | `Oregon (US West)` or closest to you |
-| **Branch** | `main` |
-| **Runtime** | `Python 3` |
+| Field             | Value                                                                   |
+| ----------------- | ----------------------------------------------------------------------- |
+| **Name**          | `food-delivery-backend`                                                 |
+| **Region**        | `Oregon (US West)` or closest to you                                    |
+| **Branch**        | `main`                                                                  |
+| **Runtime**       | `Python 3`                                                              |
 | **Build Command** | `cd backend && pip install -r requirements.txt && alembic upgrade head` |
-| **Start Command** | `cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT` |
+| **Start Command** | `cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT`        |
 
 ### 3.3 Add environment variables
 
 Click **Advanced** > **Add Environment Variable** and add these:
 
-| Key | Value |
-|-----|-------|
-| `APP_ENV` | `production` |
-| `DATABASE_URL` | *(paste your Supabase connection string from Step 2.2)* |
-| `SECRET_KEY` | *(generate a strong key — see below)* |
-| `ALGORITHM` | `HS256` |
-| `ACCESS_TOKEN_EXPIRE_MINUTES` | `60` |
-| `UPLOAD_DIR` | `uploads` |
-| `CORS_ORIGINS` | `["https://YOUR_FRONTEND.vercel.app","https://YOUR_ADMIN.vercel.app"]` |
+| Key                           | Value                                                                  |
+| ----------------------------- | ---------------------------------------------------------------------- |
+| `APP_ENV`                     | `production`                                                           |
+| `DATABASE_URL`                | _(paste your Supabase connection string from Step 2.2)_                |
+| `SECRET_KEY`                  | _(generate a strong key — see below)_                                  |
+| `ALGORITHM`                   | `HS256`                                                                |
+| `ACCESS_TOKEN_EXPIRE_MINUTES` | `60`                                                                   |
+| `UPLOAD_DIR`                  | `uploads`                                                              |
+| `CORS_ORIGINS`                | `["https://YOUR_FRONTEND.vercel.app","https://YOUR_ADMIN.vercel.app"]` |
 
 **To generate a strong SECRET_KEY**, run this in your terminal:
 
@@ -195,8 +195,14 @@ Create a new file `frontend/vercel.json`:
 ```json
 {
   "rewrites": [
-    { "source": "/api/:path*", "destination": "https://food-delivery-backend.onrender.com/api/:path*" },
-    { "source": "/uploads/:path*", "destination": "https://food-delivery-backend.onrender.com/uploads/:path*" }
+    {
+      "source": "/api/:path*",
+      "destination": "https://food-delivery-backend.onrender.com/api/:path*"
+    },
+    {
+      "source": "/uploads/:path*",
+      "destination": "https://food-delivery-backend.onrender.com/uploads/:path*"
+    }
   ]
 }
 ```
@@ -210,12 +216,12 @@ Create a new file `frontend/vercel.json`:
 3. Import your GitHub repository
 4. Vercel will detect it's a monorepo. Configure like this:
 
-| Field | Value |
-|-------|-------|
-| **Framework Preset** | `Vite` |
-| **Root Directory** | `frontend` |
-| **Build Command** | `npm run build` |
-| **Output Directory** | `dist` |
+| Field                | Value           |
+| -------------------- | --------------- |
+| **Framework Preset** | `Vite`          |
+| **Root Directory**   | `frontend`      |
+| **Build Command**    | `npm run build` |
+| **Output Directory** | `dist`          |
 
 5. Click **Deploy**
 6. Wait for deployment (1-2 minutes)
@@ -228,6 +234,7 @@ Create a new file `frontend/vercel.json`:
 ### 4.3 Verify the frontend
 
 Visit your Vercel URL. The site should load. Try:
+
 - Browsing the menu (should show food items from your API)
 - If no items appear, the database needs seeding (Step 6)
 
@@ -242,8 +249,14 @@ Same as the frontend — create a `admin/vercel.json`:
 ```json
 {
   "rewrites": [
-    { "source": "/api/:path*", "destination": "https://food-delivery-backend.onrender.com/api/:path*" },
-    { "source": "/uploads/:path*", "destination": "https://food-delivery-backend.onrender.com/uploads/:path*" }
+    {
+      "source": "/api/:path*",
+      "destination": "https://food-delivery-backend.onrender.com/api/:path*"
+    },
+    {
+      "source": "/uploads/:path*",
+      "destination": "https://food-delivery-backend.onrender.com/uploads/:path*"
+    }
   ]
 }
 ```
@@ -257,12 +270,12 @@ Same as the frontend — create a `admin/vercel.json`:
 3. Import your GitHub repository (same repo)
 4. Configure:
 
-| Field | Value |
-|-------|-------|
-| **Framework Preset** | `Vite` |
-| **Root Directory** | `admin` |
-| **Build Command** | `npm run build` |
-| **Output Directory** | `dist` |
+| Field                | Value           |
+| -------------------- | --------------- |
+| **Framework Preset** | `Vite`          |
+| **Root Directory**   | `admin`         |
+| **Build Command**    | `npm run build` |
+| **Output Directory** | `dist`          |
 
 5. Click **Deploy**
 6. Once done, your admin URL will be like:
@@ -274,6 +287,7 @@ Same as the frontend — create a `admin/vercel.json`:
 ### 5.3 Verify the admin panel
 
 Visit your admin Vercel URL. You should see the login page. Log in with:
+
 - **Email:** `admin@fooddelivery.com`
 - **Password:** `admin123`
 
@@ -297,6 +311,7 @@ python seed.py
 ```
 
 You should see:
+
 ```
 Admin user created: admin@fooddelivery.com / admin123
 Seed completed successfully!
@@ -317,6 +332,7 @@ If Shell doesn't work:
 
 1. Update your local `backend/.env` with your Supabase DATABASE_URL
 2. Run locally:
+
 ```bash
 cd backend
 python seed.py
@@ -373,11 +389,11 @@ Test the full flow:
 
 ## Free Tier Limits
 
-| Service | Free Tier Limit | What Happens |
-|---------|-----------------|--------------|
-| **Render** | 750 hours/month, spins down after 15 min idle | First request after idle takes 30-60s |
-| **Supabase** | 500MB database, 50k monthly active users | Pauses after 7 days of inactivity (can resume) |
-| **Vercel** | 100GB bandwidth/month, unlimited sites | Hard limit, no spin-down |
+| Service      | Free Tier Limit                               | What Happens                                   |
+| ------------ | --------------------------------------------- | ---------------------------------------------- |
+| **Render**   | 750 hours/month, spins down after 15 min idle | First request after idle takes 30-60s          |
+| **Supabase** | 500MB database, 50k monthly active users      | Pauses after 7 days of inactivity (can resume) |
+| **Vercel**   | 100GB bandwidth/month, unlimited sites        | Hard limit, no spin-down                       |
 
 ### Tips to stay within free tier
 
@@ -392,6 +408,7 @@ Test the full flow:
 ### Backend won't start
 
 **Check Render logs:**
+
 1. Go to Render dashboard > your service > **Logs** tab
 2. Common issues:
    - `SECRET_KEY` too short — generate a longer key
@@ -430,11 +447,10 @@ Test the full flow:
 
 - Vercel rewrites should handle this
 - If not, create a `vercel.json` in the frontend/admin root with:
+
 ```json
 {
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
 ```
 
@@ -450,13 +466,13 @@ Test the full flow:
 
 After deployment, fill in your actual URLs:
 
-| Service | URL |
-|---------|-----|
-| Backend API | `https://food-delivery-backend.onrender.com` |
-| API Docs | `https://food-delivery-backend.onrender.com/docs` |
-| Customer Frontend | `https://food-delivery-frontend.vercel.app` |
-| Admin Panel | `https://food-delivery-admin.vercel.app` |
-| Supabase Dashboard | `https://supabase.com/dashboard` |
+| Service            | URL                                                  |
+| ------------------ | ---------------------------------------------------- |
+| Backend API        | `https://food-delivery-backend.onrender.com`         |
+| API Docs           | `https://food-delivery-backend.onrender.com/docs`    |
+| Customer Frontend  | `https://food-delivery-qjuf.vercel.app/`             |
+| Admin Panel        | `https://food-delivery-rouge-seven.vercel.app/login` |
+| Supabase Dashboard | `https://supabase.com/dashboard`                     |
 
 ---
 
