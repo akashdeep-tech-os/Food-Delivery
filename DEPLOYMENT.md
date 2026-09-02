@@ -91,6 +91,7 @@ git push -u origin main
 
 ```
 postgresql://postgres.YOUR_PROJECT_REF:YOUR_PASSWORD@aws-0-YOUR_REGION.pooler.supabase.com:6543/postgres
+
 ```
 
 5. **Save this string** — you will need it in Step 3
