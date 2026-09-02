@@ -21,7 +21,7 @@ class Order(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     delivery_user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
-    status = Column(SAEnum(OrderStatus), default=OrderStatus.PLACED, nullable=False)
+    status = Column(SAEnum(OrderStatus, values_callable=lambda obj: [e.value for e in obj], create_constraint=False), default=OrderStatus.PLACED, nullable=False)
     total_amount = Column(Numeric(10, 2), nullable=False)
     delivery_fee = Column(Numeric(10, 2), default=2.0)
     discount_amount = Column(Numeric(10, 2), default=0.0)

@@ -21,7 +21,7 @@ class User(Base):
     password_hash = Column(String(255), nullable=False)
     phone = Column(String(20), nullable=True)
     address = Column(String(500), nullable=True)
-    role = Column(SAEnum(UserRole), default=UserRole.CUSTOMER, nullable=False)
+    role = Column(SAEnum(UserRole, values_callable=lambda obj: [e.value for e in obj], create_constraint=False), default=UserRole.CUSTOMER, nullable=False)
     is_active = Column(Boolean, default=True)
     avatar = Column(String(500), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
